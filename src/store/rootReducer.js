@@ -3,6 +3,6 @@ import { cardsReducer } from "./cards/reducer";
 import { gameReducer } from "./game/reducer";
 
 export const rootReducer = combineReducers({
-  cardsReducer,
-  gameReducer,
+  cards: cardsReducer,
+  game: gameReducer,
 });
