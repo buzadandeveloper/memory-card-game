@@ -15,3 +15,6 @@ export const fetchCards = () => {
   };
 };
 
+export const flipCard = (card) => {
+  return { type: actions.FLIP_CARD, payload: card };
+};
