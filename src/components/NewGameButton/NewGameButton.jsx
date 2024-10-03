@@ -1,9 +1,7 @@
 import { useDispatch } from "react-redux";
-import { startNewGame } from "../../store/game/actions";
-import { fetchCards } from "../../store/cards/actions";
+import { startNewGame } from "../../store/game";
+import { fetchCards } from "../../store/cards";
 import styled from "@emotion/styled";
-
-const Button = styled.button``;
 
 export const NewGameButton = () => {
   const dispatch = useDispatch();
@@ -16,3 +14,5 @@ export const NewGameButton = () => {
 
   return <Button onClick={newGame}>New Game</Button>;
 };
+
+const Button = styled.button``;

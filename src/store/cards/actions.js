@@ -18,3 +18,11 @@ export const fetchCards = () => {
 export const flipCard = (card) => {
   return { type: actions.FLIP_CARD, payload: card };
 };
+
+export const matchCards = (matchedCards) => {
+  return { type: actions.MATCHED_CARDS, payload: matchedCards };
+};
+
+export const flipReset = () => {
+  return { type: actions.FLIP_RESET };
+};

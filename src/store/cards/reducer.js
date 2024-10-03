@@ -25,6 +25,14 @@ const reducer = (state = cardsState, action) => {
         flippedCards: [...state.flippedCards, action.payload],
       };
     }
+    case actions.MATCHED_CARDS:
+      return {
+        ...state,
+        matchedCards: [...state.matchedCards, ...action.payload],
+        flippedCards: [],
+      };
+    case actions.FLIP_RESET:
+      return { ...state, flippedCards: [] };
     default:
       return state;
   }
