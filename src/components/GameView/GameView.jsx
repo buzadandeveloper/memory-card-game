@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SingleCard } from "../SingleCard/SingleCard";
 import { NewGameButton } from "../NewGameButton/NewGameButton";
+import { flipCard } from "../../store/cards/actions";
 
 const GameViewContainer = styled.div`
   height: 100vh;
@@ -28,18 +29,46 @@ const GameViewGrid = styled.div`
 `;
 
 export const GameView = () => {
-  const { cards, loading } = useSelector((state) => state.cards);
+  const dispatch = useDispatch();
+  const { cards, loading, flippedCards } = useSelector((state) => state.cards);
 
   useEffect(() => {
     console.log(cards);
   }, [cards]);
+
+  const handleChoiceCard = (card, index) => {
+    if (
+      flippedCards.length < 2 &&
+      !flippedCards.some((flippedCard) => flippedCard.index === index)
+    ) {
+      dispatch(flipCard({ ...card, index }));
+    }
+
+    console.log(index);
+  };
+
+  useEffect(() => {
+    console.log(flippedCards);
+    if (flippedCards.length === 2) {
+      if (flippedCards[0].id === flippedCards[1].id) {
+        console.log("true");
+      } else {
+        console.log("false");
+      }
+    }
+  }, [flippedCards]);
 
   return (
     <GameViewContainer>
       {loading && <h1>loading...</h1>}
       <GameViewGrid>
         {cards.map((card, index) => (
-          <SingleCard key={index} card={card} index={index} />
+          <SingleCard
+            key={index}
+            card={card}
+            index={index}
+            handleChoiceCard={handleChoiceCard}
+          />
         ))}
       </GameViewGrid>
       <NewGameButton />
