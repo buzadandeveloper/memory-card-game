@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { SingleCard } from "../SingleCard/SingleCard";
+import { NewGameButton } from "../NewGameButton/NewGameButton";
 
 const GameViewContainer = styled.div`
   height: 100vh;
@@ -41,6 +42,7 @@ export const GameView = () => {
           <SingleCard key={index} card={card} index={index} />
         ))}
       </GameViewGrid>
+      <NewGameButton />
     </GameViewContainer>
   );
 };
