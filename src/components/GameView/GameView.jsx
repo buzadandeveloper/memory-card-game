@@ -8,7 +8,7 @@ import { incrementTurns, gameWon } from "../../store/game";
 
 export const GameView = () => {
   const dispatch = useDispatch();
-  const { cards, loading, flippedCards, matchedCards } = useSelector(
+  const { cards, flippedCards, matchedCards } = useSelector(
     (state) => state.cards
   );
   const { turns, win, bestTurns } = useSelector((state) => state.game);
@@ -21,24 +21,20 @@ export const GameView = () => {
     ) {
       dispatch(flipCard({ ...card, index }));
     }
-    console.log(index);
   };
 
   useEffect(() => {
     if (flippedCards.length === 2) {
       dispatch(incrementTurns());
       if (flippedCards[0].id === flippedCards[1].id) {
-        console.log("true");
         dispatch(matchCards([flippedCards[0], flippedCards[1]]));
       } else {
         setTimeout(() => {
-          console.log("false");
           dispatch(flipReset());
         }, 1000);
       }
     }
   }, [flippedCards, dispatch]);
-
   useEffect(() => {
     if (matchedCards.length === cards.length && cards.length > 0) {
       dispatch(gameWon());
@@ -47,7 +43,6 @@ export const GameView = () => {
 
   return (
     <GameViewContainer>
-      {loading && <h1>loading...</h1>}
       <GameViewGrid>
         {cards.map((card, index) => (
           <SingleCard
@@ -69,12 +64,8 @@ export const GameView = () => {
 const GameViewContainer = styled.div`
   height: 100vh;
   width: 100%;
-  background: rgb(160, 168, 207);
-  background: radial-gradient(
-    circle,
-    rgba(160, 168, 207, 1) 0%,
-    rgba(224, 223, 223, 1) 100%
-  );
+  background: rgb(28, 29, 33);
+  background: radial-gradient(circle, #2e313c 0%, #2b2929 100%);
   display: flex;
   justify-content: center;
   align-items: center;
