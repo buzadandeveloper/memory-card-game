@@ -12,8 +12,13 @@ const reducer = (state = gameState, action) => {
       return { ...state, isNewGame: true, turns: 0, win: false };
     case actions.INCREMENT_TURNS:
       return { ...state, turns: state.turns + 1 };
-    case actions.GAME_WON:
-      return { ...state, win: true, bestTurns: state.turns, turns: 0 };
+    case actions.GAME_WON: {
+      const updateBestTurns =
+        state.bestTurns === 0 || state.bestTurns > state.turns
+          ? state.turns
+          : state.bestTurns;
+      return { ...state, win: true, bestTurns: updateBestTurns, turns: 0 };
+    }
     default:
       return state;
   }
