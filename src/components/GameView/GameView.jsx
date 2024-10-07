@@ -3,9 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SingleCard } from "../SingleCard/SingleCard";
 import { NewGameButton } from "../NewGameButton/NewGameButton";
-import { flipCard, matchCards, flipReset } from "../../store/cards";
-import { incrementTurns, gameWon } from "../../store/game";
-import { fetchCards } from "../../store/cards";
+import { fetchCards, gameLogic } from "../../store/cards";
 
 export const GameView = () => {
   const dispatch = useDispatch();
@@ -16,7 +14,7 @@ export const GameView = () => {
 
   useEffect(() => {
     dispatch(fetchCards());
-  }, [dispatch]);
+  }, []);
 
   const handleChoiceCard = (card, index) => {
     if (
@@ -24,27 +22,9 @@ export const GameView = () => {
       !flippedCards.some((flippedCard) => flippedCard.index === index) &&
       !matchedCards.some((matchedCard) => matchedCard.id === card.id)
     ) {
-      dispatch(flipCard({ ...card, index }));
+      dispatch(gameLogic(card, index));
     }
   };
-
-  useEffect(() => {
-    if (flippedCards.length === 2) {
-      dispatch(incrementTurns());
-      if (flippedCards[0].id === flippedCards[1].id) {
-        dispatch(matchCards([flippedCards[0], flippedCards[1]]));
-      } else {
-        setTimeout(() => {
-          dispatch(flipReset());
-        }, 1000);
-      }
-    }
-  }, [flippedCards, dispatch]);
-  useEffect(() => {
-    if (matchedCards.length === cards.length && cards.length > 0) {
-      dispatch(gameWon());
-    }
-  }, [matchedCards, cards, dispatch]);
 
   return (
     <GameViewContainer>
@@ -63,7 +43,7 @@ export const GameView = () => {
       </GameViewGrid>
       <GameViewFooter>
         <TurnsText>Turns: {turns}</TurnsText>
-        <NewGameButton />
+        {win && <NewGameButton />}
       </GameViewFooter>
     </GameViewContainer>
   );
