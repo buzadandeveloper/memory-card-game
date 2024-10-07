@@ -1,5 +1,6 @@
 import * as actions from "./actionsType";
 import * as actionsGame from "../game/actionsType";
+import { produce } from "immer";
 
 const cardsState = {
   cards: [],
@@ -13,59 +14,59 @@ const cardsState = {
 const reducer = (state = cardsState, action) => {
   switch (action.type) {
     case actions.FETCH_CARDS_REQUEST:
-      return { ...state, loading: !state.initialLoading, error: null };
-    case actions.FETCH_CARDS_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        initialLoading: false,
-        cards: action.payload.map((card) => ({
-          ...card,
-          isFlipped: false,
-          isMatched: false,
-        })),
-      };
-    case actions.FETCH_CARDS_ERROR:
-      return {
-        ...state,
-        loading: false,
-        initialLoading: false,
-        error: action.payload,
-      };
-    case actionsGame.NEW_GAME:
-      return { ...state, flippedCards: [], matchedCards: [] };
-    case actions.FLIP_CARD: {
-      const updatedCards = state.cards.map((card, index) => {
-        return index === action.payload.index
-          ? { ...card, isFlipped: true }
-          : card;
+      return produce(state, (draft) => {
+        draft.loading = !state.initialLoading;
+        draft.error = null;
       });
-      return {
-        ...state,
-        cards: updatedCards,
-        flippedCards: [...state.flippedCards, action.payload],
-      };
+    case actions.FETCH_CARDS_SUCCESS:
+      return produce(state, (draft) => {
+        draft.loading = false;
+        draft.initialLoading = false;
+        draft.cards = action.payload.map((card) => {
+          draft.isFlipped = false;
+          draft.idMatched = false;
+          return card;
+        });
+      });
+    case actions.FETCH_CARDS_ERROR:
+      return produce(state, (draft) => {
+        draft.loading = false;
+        draft.initialLoading = false;
+        draft.error = action.payload;
+      });
+    case actionsGame.NEW_GAME:
+      return produce(state, (draft) => {
+        draft.flippedCards = [];
+        draft.matchedCards = [];
+      });
+    case actions.FLIP_CARD: {
+      return produce(state, (draft) => {
+        draft.cards[action.payload.index].isFlipped = true;
+        draft.flippedCards.push(action.payload);
+      });
     }
     case actions.MATCHED_CARDS: {
-      const updatedCards = state.cards.map((card) =>
-        action.payload.some((matchedCard) => matchedCard.id === card.id)
-          ? { ...card, isMatched: true }
-          : card
-      );
-      return {
-        ...state,
-        cards: updatedCards,
-        matchedCards: [...state.matchedCards, ...action.payload],
-        flippedCards: [],
-      };
+      return produce(state, (draft) => {
+        draft.cards.forEach((card) => {
+          if (
+            action.payload.some((matchedCard) => matchedCard.id === card.id)
+          ) {
+            card.isMatched = true;
+          }
+        });
+        draft.matchedCards.push(...action.payload);
+        draft.flippedCards = [];
+      });
     }
     case actions.FLIP_RESET: {
-      const updatedCards = state.cards.map((card) => {
-        return card.isFlipped && !card.isMatched
-          ? { ...card, isFlipped: false }
-          : card;
+      return produce(state, (draft) => {
+        draft.cards.forEach((card) => {
+          if (card.isFlipped && !card.isMatched) {
+            card.isFlipped = false;
+          }
+        });
+        draft.flippedCards = [];
       });
-      return { ...state, cards: updatedCards, flippedCards: [] };
     }
     default:
       return state;

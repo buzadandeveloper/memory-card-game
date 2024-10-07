@@ -1,4 +1,6 @@
 import * as actions from "./actionsType";
+import { produce } from "immer";
+
 const gameState = {
   isNewGame: false,
   turns: 0,
@@ -9,15 +11,25 @@ const gameState = {
 const reducer = (state = gameState, action) => {
   switch (action.type) {
     case actions.NEW_GAME:
-      return { ...state, isNewGame: true, turns: 0, win: false };
+      return produce(state, (draft) => {
+        draft.isNewGame = true;
+        draft.turns = 0;
+        draft.win = false;
+      });
     case actions.INCREMENT_TURNS:
-      return { ...state, turns: state.turns + 1 };
+      return produce(state, (draft) => {
+        draft.turns = state.turns + 1;
+      });
     case actions.GAME_WON: {
       const updateBestTurns =
         state.bestTurns === 0 || state.bestTurns > state.turns
           ? state.turns
           : state.bestTurns;
-      return { ...state, win: true, bestTurns: updateBestTurns, turns: 0 };
+      return produce(state, (draft) => {
+        draft.win = true;
+        draft.bestTurns = updateBestTurns;
+        draft.turns = 0;
+      });
     }
     default:
       return state;
