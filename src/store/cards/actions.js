@@ -1,6 +1,7 @@
 import * as actions from "./actionsType";
 import { fetchCryptoData } from "../../api/cryptoApi";
 import { shuffleCards } from "../../utils/shuffleCards";
+import { incrementTurns, gameWon } from "../game";
 
 export const fetchCards = () => {
   return async (dispatch) => {
@@ -27,4 +28,24 @@ export const matchCards = (matchedCards) => {
 
 export const flipReset = () => {
   return { type: actions.FLIP_RESET };
+};
+
+export const gameLogic = (card, index) => {
+  return (dispatch, getState) => {
+    const { cards, flippedCards, matchedCards } = getState().cards;
+    dispatch(flipCard({ ...card, index }));
+    if (flippedCards.length === 1) {
+      dispatch(incrementTurns());
+      if (flippedCards[0].id === card.id) {
+        dispatch(matchCards([flippedCards[0], card]));
+        if (matchedCards.length + 2 === cards.length) {
+          dispatch(gameWon());
+        }
+      } else {
+        setTimeout(() => {
+          dispatch(flipReset());
+        }, 1000);
+      }
+    }
+  };
 };
