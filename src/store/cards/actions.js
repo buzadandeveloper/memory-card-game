@@ -32,7 +32,8 @@ export const flipReset = () => {
 
 export const gameLogic = (card, index) => {
   return (dispatch, getState) => {
-    const { cards, flippedCards, matchedCards } = getState().cards;
+    const cardsState = getState().cards;
+    const { cards, flippedCards, matchedCards } = cardsState;
     dispatch(flipCard({ ...card, index }));
     if (flippedCards.length === 1) {
       dispatch(incrementTurns());
