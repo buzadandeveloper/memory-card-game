@@ -6,17 +6,19 @@ const cardsState = {
   flippedCards: [],
   matchedCards: [],
   loading: false,
+  initialLoading: true,
   error: null,
 };
 
 const reducer = (state = cardsState, action) => {
   switch (action.type) {
     case actions.FETCH_CARDS_REQUEST:
-      return { ...state, loading: true, error: null };
+      return { ...state, loading: !state.initialLoading, error: null };
     case actions.FETCH_CARDS_SUCCESS:
       return {
         ...state,
         loading: false,
+        initialLoading: false,
         cards: action.payload.map((card) => ({
           ...card,
           isFlipped: false,
@@ -24,7 +26,12 @@ const reducer = (state = cardsState, action) => {
         })),
       };
     case actions.FETCH_CARDS_ERROR:
-      return { ...state, loading: false, error: action.payload };
+      return {
+        ...state,
+        loading: false,
+        initialLoading: false,
+        error: action.payload,
+      };
     case actionsGame.NEW_GAME:
       return { ...state, flippedCards: [], matchedCards: [] };
     case actions.FLIP_CARD: {
