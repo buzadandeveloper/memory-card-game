@@ -22,11 +22,11 @@ const reducer = (state = cardsState, action) => {
       return produce(state, (draft) => {
         draft.loading = false;
         draft.initialLoading = false;
-        draft.cards = action.payload.map((card) => {
-          card.isFlipped = false;
-          card.idMatched = false;
-          return card;
-        });
+        draft.cards = action.payload.map((card) => ({
+          ...card,
+          isFlipped: false,
+          isMatched: false,
+        }));
       });
     case actions.FETCH_CARDS_ERROR:
       return produce(state, (draft) => {
