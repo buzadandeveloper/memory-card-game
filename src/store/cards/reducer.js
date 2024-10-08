@@ -15,7 +15,7 @@ const reducer = (state = cardsState, action) => {
   switch (action.type) {
     case actions.FETCH_CARDS_REQUEST:
       return produce(state, (draft) => {
-        draft.loading = !state.initialLoading;
+        draft.loading = !draft.initialLoading;
         draft.error = null;
       });
     case actions.FETCH_CARDS_SUCCESS:
@@ -23,8 +23,8 @@ const reducer = (state = cardsState, action) => {
         draft.loading = false;
         draft.initialLoading = false;
         draft.cards = action.payload.map((card) => {
-          draft.isFlipped = false;
-          draft.idMatched = false;
+          card.isFlipped = false;
+          card.idMatched = false;
           return card;
         });
       });
