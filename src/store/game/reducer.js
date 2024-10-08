@@ -28,7 +28,6 @@ const reducer = (state = gameState, action) => {
       return produce(state, (draft) => {
         draft.win = true;
         draft.bestTurns = updateBestTurns;
-        draft.turns = 0;
       });
     }
     default:
