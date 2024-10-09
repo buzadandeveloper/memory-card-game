@@ -19,7 +19,7 @@ export const fetchCards = () => {
       } catch (error) {
         dispatch({ type: actions.FETCH_CARDS_ERROR, payload: error.message });
       }
-    }, 500);
+    }, 1300);
   };
 };
 
