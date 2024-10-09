@@ -1,1 +1,1 @@
-export { startNewGame, incrementTurns, gameWon } from "./actions";
+export { startNewGame, incrementTurns, gameWon ,cardValue, groupValue, cardChangeValue, groupChangeValue } from "./actions";

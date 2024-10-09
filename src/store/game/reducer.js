@@ -1,4 +1,5 @@
 import * as actions from "./actionsType";
+import { dynamicData } from "../../utils/dynamicData";
 import { produce } from "immer";
 
 const gameState = {
@@ -6,6 +7,9 @@ const gameState = {
   turns: 0,
   win: false,
   bestTurns: 0,
+  selectedCardValue: 2,
+  selectedGroupValue: 6,
+  groupDeck: dynamicData,
 };
 
 const reducer = (state = gameState, action) => {
@@ -28,6 +32,16 @@ const reducer = (state = gameState, action) => {
       return produce(state, (draft) => {
         draft.win = true;
         draft.bestTurns = updateBestTurns;
+      });
+    }
+    case actions.CARD_VALUE: {
+      return produce(state, (draft) => {
+        draft.selectedCardValue = action.payload;
+      });
+    }
+    case actions.GROUP_VALUE: {
+      return produce(state, (draft) => {
+        draft.selectedGroupValue = action.payload;
       });
     }
     default:
