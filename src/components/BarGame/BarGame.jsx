@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { GroupDeck } from "../GroupDeck/GroupDeck";
 export const BarGame = () => {
   const { bestTurns } = useSelector((state) => state.game);
-
   return (
     <BarGameContainer>
       <TitleGame>CryptoMemoryGame</TitleGame>
