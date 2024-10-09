@@ -1,18 +1,12 @@
 import { useDispatch } from "react-redux";
-import { startNewGame } from "../../store/game";
-import { fetchCards, flipReset } from "../../store/cards";
+import { startGame } from "../../store/cards";
 import styled from "@emotion/styled";
 
 export const NewGameButton = () => {
   const dispatch = useDispatch();
   const newGame = () => {
-    dispatch(flipReset());
-    dispatch(startNewGame());
-    setTimeout(() => {
-      dispatch(fetchCards());
-    }, 1000);
+    dispatch(startGame());
   };
-
   return <Button onClick={newGame}>New Game</Button>;
 };
 

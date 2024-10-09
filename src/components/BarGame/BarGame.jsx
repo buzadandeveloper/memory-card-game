@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
+import { GroupDeck } from "../GroupDeck/GroupDeck";
 export const BarGame = () => {
   const { bestTurns } = useSelector((state) => state.game);
 
@@ -8,6 +9,7 @@ export const BarGame = () => {
       <TitleGame>CryptoMemoryGame</TitleGame>
       <BarGameMenu>
         <BestTurnsGame>Best turns: {bestTurns}</BestTurnsGame>
+        <GroupDeck />
       </BarGameMenu>
     </BarGameContainer>
   );
@@ -31,6 +33,7 @@ const TitleGame = styled.h1`
 `;
 const BarGameMenu = styled.div`
   display: flex;
+  gap: 3em;
 `;
 
 const BestTurnsGame = styled.h2`

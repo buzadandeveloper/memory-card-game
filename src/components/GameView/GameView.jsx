@@ -7,18 +7,19 @@ import { fetchCards, gameLogic } from "../../store/cards";
 
 export const GameView = () => {
   const dispatch = useDispatch();
-  const { cards, flippedCards, matchedCards, initialLoading } = useSelector(
-    (state) => state.cards
+  const { cards, flippedCards, matchedCards, loading, initialLoading } =
+    useSelector((state) => state.cards);
+  const { turns, win, selectedCardValue, selectedGroupValue } = useSelector(
+    (state) => state.game
   );
-  const { turns, win } = useSelector((state) => state.game);
 
   useEffect(() => {
     dispatch(fetchCards());
-  }, []);
+  }, [selectedCardValue, selectedGroupValue]);
 
   const handleChoiceCard = (card, index) => {
     if (
-      flippedCards.length < 2 &&
+      flippedCards.length < selectedCardValue &&
       !flippedCards.some((flippedCard) => flippedCard.index === index) &&
       !matchedCards.some((matchedCard) => matchedCard.id === card.id)
     ) {
@@ -28,21 +29,31 @@ export const GameView = () => {
 
   return (
     <GameViewContainer>
-      {initialLoading && <LoadingSpinner className="loader" />}
+      {(loading || initialLoading) && <LoadingSpinner className="loader" />}
       {win && <WonText>You Won !</WonText>}
-      <GameViewGrid>
-        {cards.length > 0 &&
-          cards.map((card, index) => (
-            <SingleCard
-              key={index}
-              card={card}
-              index={index}
-              handleChoiceCard={handleChoiceCard}
-            />
-          ))}
-      </GameViewGrid>
+      {!loading && !initialLoading && (
+        <GameViewGrid
+          className={
+            selectedCardValue === 3 && selectedGroupValue === 5
+              ? "c-3-g-5"
+              : selectedCardValue === 3 && selectedGroupValue === 6
+              ? "c-3-g-6"
+              : "c-2"
+          }
+        >
+          {cards.length > 0 &&
+            cards.map((card, index) => (
+              <SingleCard
+                key={index}
+                card={card}
+                index={index}
+                handleChoiceCard={handleChoiceCard}
+              />
+            ))}
+        </GameViewGrid>
+      )}
       <GameViewFooter>
-        <TurnsText>Turns: {turns}</TurnsText>
+        {!loading && !initialLoading && <TurnsText>Turns: {turns}</TurnsText>}
         {win && <NewGameButton />}
       </GameViewFooter>
     </GameViewContainer>
@@ -84,11 +95,21 @@ const WonText = styled.h1`
 
 const GameViewGrid = styled.div`
   display: grid;
-  grid-template-rows: repeat(3, 100px);
-  grid-template-columns: repeat(4, 100px);
   gap: 1em;
   margin-bottom: 4em;
   transition: 0.6s ease-in;
+  &.c-2 {
+    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(4, 100px);
+  }
+  &.c-3-g-5 {
+    grid-template-rows: repeat(2, 100px);
+    grid-template-columns: repeat(5, 100px);
+  }
+  &.c-3-g-6 {
+    grid-template-rows: repeat(4, 100px);
+    grid-template-columns: repeat(6, 100px);
+  }
 `;
 
 const TurnsText = styled.p`
