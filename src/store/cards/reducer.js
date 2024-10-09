@@ -68,6 +68,16 @@ const reducer = (state = cardsState, action) => {
         draft.flippedCards = [];
       });
     }
+    case actions.CHANGE_CARD_GROUP_REQUEST: {
+      return produce(state, (draft) => {
+        draft.loading = true;
+      });
+    }
+    case actions.CHANGE_CARD_GROUP_SUCCESS: {
+      return produce(state, (draft) => {
+        draft.loading = false;
+      });
+    }
     default:
       return state;
   }

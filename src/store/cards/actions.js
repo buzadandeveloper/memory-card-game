@@ -1,16 +1,21 @@
 import * as actions from "./actionsType";
 import { fetchCryptoData } from "../../api/cryptoApi";
 import { shuffleCards } from "../../utils/shuffleCards";
-import { incrementTurns, gameWon } from "../game";
+import { incrementTurns, gameWon, startNewGame } from "../game";
 
 export const fetchCards = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const gameState = getState().game;
+    const { selectedCardValue, selectedGroupValue } = gameState;
+
     dispatch({ type: actions.FETCH_CARDS_REQUEST });
+
     setTimeout(async () => {
       try {
         let cards = await fetchCryptoData();
-        cards = shuffleCards(cards);
-        dispatch({ type: actions.FETCH_CARDS_SUCCESS, payload: cards });
+        const deck = cards.slice(0, selectedGroupValue);
+        const shuffledCards = shuffleCards(deck, selectedCardValue);
+        dispatch({ type: actions.FETCH_CARDS_SUCCESS, payload: shuffledCards });
       } catch (error) {
         dispatch({ type: actions.FETCH_CARDS_ERROR, payload: error.message });
       }
@@ -30,16 +35,32 @@ export const flipReset = () => {
   return { type: actions.FLIP_RESET };
 };
 
+export const startGame = () => {
+  return (dispatch) => {
+    dispatch(flipReset());
+    dispatch(startNewGame());
+    setTimeout(() => {
+      dispatch(fetchCards());
+    }, 1000);
+  };
+};
+
 export const gameLogic = (card, index) => {
   return (dispatch, getState) => {
     const cardsState = getState().cards;
+    const gameState = getState().game;
     const { cards, flippedCards, matchedCards } = cardsState;
+    const { selectedCardValue } = gameState;
     dispatch(flipCard({ ...card, index }));
-    if (flippedCards.length === 1) {
+
+    if (flippedCards.length === selectedCardValue - 1) {
       dispatch(incrementTurns());
-      if (flippedCards[0].id === card.id) {
-        dispatch(matchCards([flippedCards[0], card]));
-        if (matchedCards.length + 2 === cards.length) {
+      const allMatch = flippedCards.every(
+        (flippedCard) => flippedCard.id === card.id
+      );
+      if (allMatch) {
+        dispatch(matchCards([...flippedCards, card]));
+        if (matchedCards.length + selectedCardValue === cards.length) {
           dispatch(gameWon());
         }
       } else {
