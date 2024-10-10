@@ -8,12 +8,14 @@ export const GroupDeck = () => {
     (state) => state.game
   );
 
-  const handleCardChangeValue = (e) => {
-    dispatch(cardChangeValue(e));
+  const handleOnCardChangeValue = (e) => {
+    const selectedValue = e.target.value;
+    dispatch(cardChangeValue(selectedValue));
   };
 
-  const handleGroupChange = (e) => {
-    dispatch(groupChangeValue(e));
+  const handleOnGroupChange = (e) => {
+    const selectedGroup = e.target.value;
+    dispatch(groupChangeValue(selectedGroup));
   };
 
   const selectedGroup = groupDeck.find(
@@ -24,14 +26,14 @@ export const GroupDeck = () => {
 
   return (
     <GroupContainer>
-      <CardSelect value={selectedCardValue} onChange={handleCardChangeValue}>
+      <CardSelect value={selectedCardValue} onChange={handleOnCardChangeValue}>
         {groupDeck.map((card, index) => (
           <OptionSelect key={index} value={card.name}>
             {card.name} Cards
           </OptionSelect>
         ))}
       </CardSelect>
-      <GroupSelect value={selectedGroupValue} onChange={handleGroupChange}>
+      <GroupSelect value={selectedGroupValue} onChange={handleOnGroupChange}>
         {available.map((group, index) => (
           <OptionSelect key={index} value={group}>
             {group} Groups

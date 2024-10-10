@@ -20,11 +20,10 @@ export const groupValue = (groupValue) => {
   return { type: actions.GROUP_VALUE, payload: groupValue };
 };
 
-export const cardChangeValue = (e) => {
+export const cardChangeValue = (selectedCard) => {
   return (dispatch, getState) => {
     const gameState = getState().game;
     const { groupDeck } = gameState;
-    const selectedCard = e.target.value;
     dispatch(cardValue(Number(selectedCard)));
     dispatch(startNewGame());
     const resetGroupValue = groupDeck.find(
@@ -34,9 +33,8 @@ export const cardChangeValue = (e) => {
   };
 };
 
-export const groupChangeValue = (e) => {
+export const groupChangeValue = (selectedGroup) => {
   return (dispatch) => {
-    const selectedGroup = e.target.value;
     dispatch(groupValue(Number(selectedGroup)));
     dispatch(startNewGame());
   };

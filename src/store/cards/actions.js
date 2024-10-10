@@ -1,4 +1,5 @@
 import * as actions from "./actionsType";
+import { TIMEOUT_DURATION, TIMEOUT_FETCH_CARDS } from "../../config/constants";
 import { fetchCryptoData } from "../../api/cryptoApi";
 import { shuffleCards } from "../../utils/shuffleCards";
 import { incrementTurns, gameWon, startNewGame } from "../game";
@@ -19,7 +20,7 @@ export const fetchCards = () => {
       } catch (error) {
         dispatch({ type: actions.FETCH_CARDS_ERROR, payload: error.message });
       }
-    }, 1300);
+    }, TIMEOUT_FETCH_CARDS);
   };
 };
 
@@ -41,7 +42,7 @@ export const startGame = () => {
     dispatch(startNewGame());
     setTimeout(() => {
       dispatch(fetchCards());
-    }, 1000);
+    }, TIMEOUT_DURATION);
   };
 };
 
@@ -52,7 +53,6 @@ export const gameLogic = (card, index) => {
     const { cards, flippedCards, matchedCards } = cardsState;
     const { selectedCardValue } = gameState;
     dispatch(flipCard({ ...card, index }));
-
     if (flippedCards.length === selectedCardValue - 1) {
       dispatch(incrementTurns());
       const allMatch = flippedCards.every(
@@ -66,7 +66,7 @@ export const gameLogic = (card, index) => {
       } else {
         setTimeout(() => {
           dispatch(flipReset());
-        }, 1000);
+        }, TIMEOUT_DURATION);
       }
     }
   };

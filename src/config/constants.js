@@ -1,0 +1,2 @@
+export const TIMEOUT_FETCH_CARDS = 1300;
+export const TIMEOUT_DURATION = 1000;

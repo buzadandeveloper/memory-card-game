@@ -30,18 +30,10 @@ export const GameView = () => {
   return (
     <GameViewContainer>
       {(loading || initialLoading) && <LoadingSpinner className="loader" />}
-      {!win && <WonText>You Won !</WonText>}
+      {win && <WonText>You Won !</WonText>}
       {!loading && !initialLoading && (
         <GameViewGrid
-          className={
-            selectedCardValue === 3 && selectedGroupValue === 5
-              ? "c-3-g-4"
-              : selectedCardValue === 3 && selectedGroupValue === 6
-              ? "c-3-g-6"
-              : selectedCardValue === 2 && selectedGroupValue === 8
-              ? "c-2-g-8"
-              : "c-2-g-6"
-          }
+          className={`c-${selectedCardValue}-g-${selectedGroupValue}`}
         >
           {cards.length > 0 &&
             cards.map((card, index) => (
@@ -72,7 +64,7 @@ const GameViewContainer = styled.div`
   align-items: center;
   flex-direction: column;
   position: relative;
-  @media (max-width: 500px) {
+  @media (max-width: 700px) {
     padding-top: 1em;
   }
 `;
@@ -135,6 +127,10 @@ const GameViewGrid = styled.div`
       grid-template-rows: repeat(auto, 100px);
       grid-template-columns: repeat(2, 100px);
     }
+    &.c-3-g-4 {
+      grid-template-rows: repeat(auto, 100px);
+      grid-template-columns: repeat(3, 100px);
+    }
   }
   @media (max-width: 375px) {
     &.c-2-g-6 {
@@ -149,6 +145,11 @@ const GameViewGrid = styled.div`
     &.c-3-g-6 {
       grid-template-rows: repeat(auto, 100px);
       grid-template-columns: repeat(3, 100px);
+    }
+  }
+  @media (max-width: 390px) {
+    &.c-3-g-4 {
+      grid-template-columns: repeat(2, 100px);
     }
   }
 `;
