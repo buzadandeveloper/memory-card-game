@@ -35,10 +35,12 @@ export const GameView = () => {
         <GameViewGrid
           className={
             selectedCardValue === 3 && selectedGroupValue === 5
-              ? "c-3-g-5"
+              ? "c-3-g-4"
               : selectedCardValue === 3 && selectedGroupValue === 6
               ? "c-3-g-6"
-              : "c-2"
+              : selectedCardValue === 2 && selectedGroupValue === 8
+              ? "c-2-g-8"
+              : "c-2-g-6"
           }
         >
           {cards.length > 0 &&
@@ -61,7 +63,7 @@ export const GameView = () => {
 };
 
 const GameViewContainer = styled.div`
-  height: 91vh;
+  height: 90vh;
   width: 100%;
   background: ${({ theme }) => theme.colors.jet_black};
   background: radial-gradient(circle, #2e313c 0%, #2b2929 100%);
@@ -70,6 +72,9 @@ const GameViewContainer = styled.div`
   align-items: center;
   flex-direction: column;
   position: relative;
+  @media (max-width: 500px) {
+    padding-top: 1em;
+  }
 `;
 
 const WonText = styled.h1`
@@ -88,7 +93,7 @@ const WonText = styled.h1`
       transform: translate(-50%, -300%);
     }
     100% {
-      transform: translate(-50%, -230%);
+      transform: translate(-50%, -150%);
     }
   }
 `;
@@ -96,19 +101,51 @@ const WonText = styled.h1`
 const GameViewGrid = styled.div`
   display: grid;
   gap: 1em;
-  margin-bottom: 4em;
   transition: 0.6s ease-in;
-  &.c-2 {
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &.c-2-g-6 {
     grid-template-rows: repeat(3, 100px);
     grid-template-columns: repeat(4, 100px);
   }
-  &.c-3-g-5 {
-    grid-template-rows: repeat(2, 100px);
-    grid-template-columns: repeat(5, 100px);
+  &.c-2-g-8 {
+    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(4, 100px);
+  }
+  &.c-3-g-4 {
+    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(4, 100px);
   }
   &.c-3-g-6 {
     grid-template-rows: repeat(4, 100px);
     grid-template-columns: repeat(6, 100px);
+  }
+  @media (max-width: 500px) {
+    &.c-2-g-6 {
+      grid-template-rows: repeat(auto, 100px);
+      grid-template-columns: repeat(3, 100px);
+    }
+    &.c-2-g-8 {
+      grid-template-rows: repeat(auto, 100px);
+      grid-template-columns: repeat(2, 100px);
+    }
+  }
+  @media (max-width: 375px) {
+    &.c-2-g-6 {
+      grid-template-rows: repeat(auto, 100px);
+      grid-template-columns: repeat(2, 100px);
+    }
+    &.c-3-g-6 {
+      grid-template-columns: repeat(2, 100px) !important;
+    }
+  }
+  @media (max-width: 700px) {
+    &.c-3-g-6 {
+      grid-template-rows: repeat(auto, 100px);
+      grid-template-columns: repeat(3, 100px);
+    }
   }
 `;
 

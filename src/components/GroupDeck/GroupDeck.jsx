@@ -47,6 +47,9 @@ const GroupContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 1em;
+  @media (max-width: 375px) {
+    justify-content: center;
+  }
 `;
 
 const CardSelect = styled.select`
