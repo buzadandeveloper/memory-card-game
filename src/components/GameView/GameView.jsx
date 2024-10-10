@@ -30,7 +30,7 @@ export const GameView = () => {
   return (
     <GameViewContainer>
       {(loading || initialLoading) && <LoadingSpinner className="loader" />}
-      {win && <WonText>You Won !</WonText>}
+      {!win && <WonText>You Won !</WonText>}
       {!loading && !initialLoading && (
         <GameViewGrid
           className={
@@ -82,6 +82,7 @@ const WonText = styled.h1`
   text-shadow: 1px 1px 0 white, -1px 1px 0 white, 1px -1px 0 white,
     -1px -1px 0 white;
   font-weight: 500;
+  font-size: 2rem;
   position: absolute;
   z-index: 100;
   top: 50%;
@@ -95,6 +96,9 @@ const WonText = styled.h1`
     100% {
       transform: translate(-50%, -150%);
     }
+  }
+  @media (max-width: 325px) {
+    font-size: 1.5rem;
   }
 `;
 
