@@ -5,6 +5,6 @@ export const dynamicData = [
   },
   {
     name: 3,
-    collection: [5, 6],
+    collection: [4, 6],
   },
 ];
