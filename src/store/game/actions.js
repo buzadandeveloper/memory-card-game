@@ -1,4 +1,5 @@
 import * as actions from "./actionsType";
+import { updateCards } from "../cards";
 
 export const startNewGame = () => {
   return { type: actions.NEW_GAME };
@@ -23,6 +24,7 @@ export const groupValue = (groupValue) => {
 export const cardChangeValue = (selectedCard) => {
   return (dispatch) => {
     dispatch(cardValue(Number(selectedCard)));
+    dispatch(updateCards());
     dispatch(startNewGame());
   };
 };

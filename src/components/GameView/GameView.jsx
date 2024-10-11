@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SingleCard } from "../SingleCard/SingleCard";
 import { NewGameButton } from "../NewGameButton/NewGameButton";
-import { fetchCards, gameLogic, updateCards } from "../../store/cards";
+import { fetchCards, gameLogic } from "../../store/cards";
 
 export const GameView = () => {
   const dispatch = useDispatch();
@@ -16,10 +16,6 @@ export const GameView = () => {
   useEffect(() => {
     dispatch(fetchCards(selectedGroupValue));
   }, [selectedGroupValue]);
-
-  useEffect(() => {
-    dispatch(updateCards());
-  }, [selectedCardValue]);
 
   const handleChoiceCard = (card, index) => {
     if (
