@@ -55,13 +55,10 @@ export const startGame = () => {
 
 export const updateCards = () => {
   return (dispatch, getState) => {
-    const cardsState = getState().cards;
-    const gameState = getState().game;
-    const { uniqueCards } = cardsState;
-    const { selectedCardValue } = gameState;
-
+    const { cards, game } = getState();
+    const { uniqueCards } = cards;
+    const { selectedCardValue } = game;
     const reshuffleNewCards = shuffleCards(uniqueCards, selectedCardValue);
-
     dispatch({ type: actions.UPDATE_CARDS, payload: reshuffleNewCards });
   };
 };
