@@ -1,1 +1,1 @@
-export { fetchCards, gameLogic, flipReset, startGame } from "./actions";
+export { fetchCards, gameLogic, flipReset, startGame, updateCards } from "./actions";

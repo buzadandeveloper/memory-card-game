@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SingleCard } from "../SingleCard/SingleCard";
 import { NewGameButton } from "../NewGameButton/NewGameButton";
-import { fetchCards, gameLogic } from "../../store/cards";
+import { fetchCards, gameLogic, updateCards } from "../../store/cards";
 
 export const GameView = () => {
   const dispatch = useDispatch();
@@ -14,8 +14,12 @@ export const GameView = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchCards());
-  }, [selectedCardValue, selectedGroupValue]);
+    dispatch(fetchCards(selectedGroupValue));
+  }, [selectedGroupValue]);
+
+  useEffect(() => {
+    dispatch(updateCards());
+  }, [selectedCardValue]);
 
   const handleChoiceCard = (card, index) => {
     if (
@@ -32,9 +36,7 @@ export const GameView = () => {
       {(loading || initialLoading) && <LoadingSpinner className="loader" />}
       {win && <WonText>You Won !</WonText>}
       {!loading && !initialLoading && (
-        <GameViewGrid
-          className={`c-${selectedCardValue}-g-${selectedGroupValue}`}
-        >
+        <GameViewGrid>
           {cards.length > 0 &&
             cards.map((card, index) => (
               <SingleCard
@@ -102,55 +104,12 @@ const GameViewGrid = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  &.c-2-g-6 {
-    grid-template-rows: repeat(3, 100px);
-    grid-template-columns: repeat(4, 100px);
+  grid-template-columns: repeat(4, 100px);
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(3, 100px);
   }
-  &.c-2-g-8 {
-    grid-template-rows: repeat(3, 100px);
-    grid-template-columns: repeat(4, 100px);
-  }
-  &.c-3-g-4 {
-    grid-template-rows: repeat(3, 100px);
-    grid-template-columns: repeat(4, 100px);
-  }
-  &.c-3-g-6 {
-    grid-template-rows: repeat(4, 100px);
-    grid-template-columns: repeat(6, 100px);
-  }
-  @media (max-width: 500px) {
-    &.c-2-g-6 {
-      grid-template-rows: repeat(auto, 100px);
-      grid-template-columns: repeat(3, 100px);
-    }
-    &.c-2-g-8 {
-      grid-template-rows: repeat(auto, 100px);
-      grid-template-columns: repeat(2, 100px);
-    }
-    &.c-3-g-4 {
-      grid-template-rows: repeat(auto, 100px);
-      grid-template-columns: repeat(3, 100px);
-    }
-  }
-  @media (max-width: 375px) {
-    &.c-2-g-6 {
-      grid-template-rows: repeat(auto, 100px);
-      grid-template-columns: repeat(2, 100px);
-    }
-    &.c-3-g-6 {
-      grid-template-columns: repeat(2, 100px) !important;
-    }
-  }
-  @media (max-width: 700px) {
-    &.c-3-g-6 {
-      grid-template-rows: repeat(auto, 100px);
-      grid-template-columns: repeat(3, 100px);
-    }
-  }
-  @media (max-width: 390px) {
-    &.c-3-g-4 {
-      grid-template-columns: repeat(2, 100px);
-    }
+  @media (max-width: 400px) {
+    grid-template-columns: repeat(2, 100px);
   }
 `;
 

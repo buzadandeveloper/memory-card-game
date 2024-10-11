@@ -21,15 +21,9 @@ export const groupValue = (groupValue) => {
 };
 
 export const cardChangeValue = (selectedCard) => {
-  return (dispatch, getState) => {
-    const gameState = getState().game;
-    const { groupDeck } = gameState;
+  return (dispatch) => {
     dispatch(cardValue(Number(selectedCard)));
     dispatch(startNewGame());
-    const resetGroupValue = groupDeck.find(
-      (group) => group.name === Number(selectedCard)
-    );
-    resetGroupValue && dispatch(groupValue(resetGroupValue.collection[0]));
   };
 };
 

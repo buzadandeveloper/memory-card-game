@@ -4,18 +4,23 @@ import { fetchCryptoData } from "../../api/cryptoApi";
 import { shuffleCards } from "../../utils/shuffleCards";
 import { incrementTurns, gameWon, startNewGame } from "../game";
 
-export const fetchCards = () => {
+export const updateUnique = (uniqueCards) => {
+  return { type: actions.UPDATE_UNIQUE, payload: uniqueCards };
+};
+
+export const fetchCards = (group) => {
   return async (dispatch, getState) => {
     const gameState = getState().game;
-    const { selectedCardValue, selectedGroupValue } = gameState;
+    const { selectedCardValue } = gameState;
 
     dispatch({ type: actions.FETCH_CARDS_REQUEST });
 
     setTimeout(async () => {
       try {
-        let cards = await fetchCryptoData();
-        const deck = cards.slice(0, selectedGroupValue);
-        const shuffledCards = shuffleCards(deck, selectedCardValue);
+        let cards = await fetchCryptoData(group);
+        const uniqueCards = [...cards];
+        dispatch(updateUnique(uniqueCards));
+        const shuffledCards = shuffleCards(uniqueCards, selectedCardValue);
         dispatch({ type: actions.FETCH_CARDS_SUCCESS, payload: shuffledCards });
       } catch (error) {
         dispatch({ type: actions.FETCH_CARDS_ERROR, payload: error.message });
@@ -37,12 +42,27 @@ export const flipReset = () => {
 };
 
 export const startGame = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const gameState = getState().game;
+    const { selectedGroupValue } = gameState;
     dispatch(flipReset());
     dispatch(startNewGame());
     setTimeout(() => {
-      dispatch(fetchCards());
+      dispatch(fetchCards(selectedGroupValue));
     }, TIMEOUT_DURATION);
+  };
+};
+
+export const updateCards = () => {
+  return (dispatch, getState) => {
+    const cardsState = getState().cards;
+    const gameState = getState().game;
+    const { uniqueCards } = cardsState;
+    const { selectedCardValue } = gameState;
+
+    const reshuffleNewCards = shuffleCards(uniqueCards, selectedCardValue);
+
+    dispatch({ type: actions.UPDATE_CARDS, payload: reshuffleNewCards });
   };
 };
 

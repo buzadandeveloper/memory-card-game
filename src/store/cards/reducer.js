@@ -4,8 +4,10 @@ import { produce } from "immer";
 
 const cardsState = {
   cards: [],
+  uniqueCards: [], 
   flippedCards: [],
   matchedCards: [],
+  cardValue: 0,
   loading: false,
   initialLoading: true,
   error: null,
@@ -77,6 +79,16 @@ const reducer = (state = cardsState, action) => {
       return produce(state, (draft) => {
         draft.loading = false;
       });
+    }
+    case actions.UPDATE_UNIQUE: {
+      return produce(state, (draft) => {
+        draft.uniqueCards = action.payload;////
+      });
+    }
+    case actions.UPDATE_CARDS: {
+      return produce(state, (draft) => {
+        draft.cards = action.payload;////
+      })
     }
     default:
       return state;

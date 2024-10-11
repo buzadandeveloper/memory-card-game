@@ -10,6 +10,7 @@ const gameState = {
   bestTurns: loadBestTurns(2, 6),
   selectedCardValue: 2,
   selectedGroupValue: 6,
+  
   groupDeck: dynamicData,
 };
 
@@ -21,7 +22,7 @@ const reducer = (state = gameState, action) => {
         draft.turns = 0;
         draft.win = false;
       });
-    case actions.INCREMENT_TURNS:
+    case actions.INCREMENT_TURNS: 
       return produce(state, (draft) => {
         draft.turns = state.turns + 1;
       });
