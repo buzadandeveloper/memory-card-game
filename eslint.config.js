@@ -36,7 +36,7 @@ export default [
       "react/prop-types": "off",
       "react/no-unescaped-entities": "off",
       "react-hooks/exhaustive-deps": "off",
-       "next-line no-undef": "off",
+       "no-undef": "off",
     },
   },
 ];
