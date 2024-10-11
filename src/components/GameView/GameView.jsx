@@ -14,7 +14,10 @@ export const GameView = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchCards(selectedGroupValue));
+    const timeoutId = setTimeout(() => {
+      dispatch(fetchCards(selectedGroupValue));
+    }, 500);
+    return () => clearTimeout(timeoutId);
   }, [selectedGroupValue]);
 
   const handleChoiceCard = (card, index) => {
