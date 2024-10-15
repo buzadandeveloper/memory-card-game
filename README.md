@@ -1,5 +1,5 @@
 ## Memory card game
- 
+https://crypto-memory-game.netlify.app/
 Full description of card memory game find [here](https://www.classicgamesandpuzzles.com/Memory.html) (but don't get into many details)
 
 Simple example of a playable game you can find [here](https://nichitaa.github.io/pokemon-card-memory-game/)
@@ -35,5 +35,3 @@ Implement those features only if basic requirement are clear and the game is pla
 - Add dynamic game settings. User needs a way to change card types and card flip count (`n` and `m` variables)
 - Add CI/CD that will build and publish your app on each push to `master` to a free self-hosted platform (like github pages, but it won't work for you since the repo is private). Need to do some research here
 - Add some unit/component tests (e.g.: vitest)
-
-Good luck!
