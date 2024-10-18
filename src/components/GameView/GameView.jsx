@@ -100,6 +100,7 @@ const GameViewGrid = styled.div`
   gap: 1em;
   transition: 0.6s ease-in;
   overflow-y: auto;
+  padding: 1em 0;
   &::-webkit-scrollbar {
     display: none;
   }
