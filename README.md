@@ -1,5 +1,5 @@
 ## Memory card game
-https://crypto-memory-game.netlify.app/
+#https://crypto-memory-game.netlify.app/
 Full description of card memory game find [here](https://www.classicgamesandpuzzles.com/Memory.html) (but don't get into many details)
 
 Simple example of a playable game you can find [here](https://nichitaa.github.io/pokemon-card-memory-game/)
